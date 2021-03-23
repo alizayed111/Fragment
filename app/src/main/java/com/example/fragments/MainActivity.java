@@ -1,5 +1,7 @@
-package com.example.fragmentexample1;
 
+package com.example.fragments;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,37 +10,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-//import com.example.android.fragmentexample1.R;
-
-//import android.support.v4.app.FragmentManager;
-//import android.support.v4.app.FragmentTransaction;
-//import android.support.v7.app.AppCompatActivity;
-
 public class MainActivity extends AppCompatActivity {
-
     private Button mButton;
     private boolean isFragmentDisplayed = false;
-
-    // Saved instance state key.
     static final String STATE_FRAGMENT = "state_of_fragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // Get the button for opening and closing the fragment.
         mButton = findViewById(R.id.open_button);
-
-        // If returning from a configuration change, get the
-        // fragment state and set the button text.
         if (savedInstanceState != null) {
-            isFragmentDisplayed = savedInstanceState.getBoolean(STATE_FRAGMENT);
+            isFragmentDisplayed =
+                    savedInstanceState.getBoolean(STATE_FRAGMENT);
             if (isFragmentDisplayed) {
                 // If the fragment is displayed, change button to "close".
                 mButton.setText(R.string.close);
             }
         }
-        // Set the click listener for the button.
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,34 +38,22 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
-    /**
-     * This method is called when the user clicks the button
-     * to open the fragment.
-     */
-    public void displayFragment() {
-        // Instantiate the fragment.
+    public void displayFragment(){
         SimpleFragment simpleFragment = SimpleFragment.newInstance();
-        // Get the FragmentManager and start a transaction.
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager
                 .beginTransaction();
-
-        // Add the SimpleFragment.
         fragmentTransaction.add(R.id.fragment_container,
                 simpleFragment).addToBackStack(null).commit();
-
-        // Update the Button text.
+// Update the Button text.
         mButton.setText(R.string.close);
-        // Set boolean flag to indicate fragment is open.
+// Set boolean flag to indicate fragment is open.
         isFragmentDisplayed = true;
     }
 
-    /**
-     * This method is called when the user clicks the button to
-     * close the fragment.
-     */
     public void closeFragment() {
         // Get the FragmentManager.
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -94,10 +71,13 @@ public class MainActivity extends AppCompatActivity {
         // Set boolean flag to indicate fragment is closed.
         isFragmentDisplayed = false;
     }
-
     public void onSaveInstanceState(Bundle savedInstanceState) {
         // Save the state of the fragment (true=open, false=closed).
         savedInstanceState.putBoolean(STATE_FRAGMENT, isFragmentDisplayed);
         super.onSaveInstanceState(savedInstanceState);
+    }
+    public void onNextClick(View view) {
+        Intent intent = new Intent(this, SecondActivity.class);
+        startActivity(intent);
     }
 }
